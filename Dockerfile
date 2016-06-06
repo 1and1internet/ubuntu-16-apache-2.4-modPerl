@@ -1,4 +1,4 @@
-FROM 1and1internet/ubuntu-16-apache-2.4
+FROM 1and1internet/ubuntu-16-apache-2.4:latest
 MAINTAINER james.wilkins@fasthosts.com
 ARG DEBIAN_FRONTEND=noninteractive
 RUN \
