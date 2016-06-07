@@ -10,7 +10,7 @@ if not ENV['IMAGE'] then
 end
 
 LISTEN_PORT=8080
-CONTAINER_START_DELAY=10
+CONTAINER_START_DELAY=30
 
 RSpec.configure do |c|
   @image = Docker::Image.get(ENV['IMAGE'])
@@ -22,6 +22,10 @@ RSpec.configure do |c|
       'PortBindings' => { "#{LISTEN_PORT}/tcp" => [{ 'HostPort' => "#{LISTEN_PORT}" }]}
     }
   }
+
+  describe command("sleep #{CONTAINER_START_DELAY}") do
+    its(:stdout) { should eq "" }
+  end
 
   describe "tests" do
     include_examples 'docker-ubuntu-16'
