@@ -30,6 +30,6 @@ RSpec.configure do |c|
   describe "tests" do
     include_examples 'docker-ubuntu-16'
     include_examples 'docker-ubuntu-16-apache-2.4-alt'
-#    include_examples 'mod_perl-tests'
+    include_examples 'mod_perl-tests'
   end
 end

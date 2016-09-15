@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rsync -roglv /usr/src/ /var/www/ --ignore-existing
+rsync -roglv /usr/src/ /var/www/ --ignore-existing --exclude='*/.gitplaceholder'
