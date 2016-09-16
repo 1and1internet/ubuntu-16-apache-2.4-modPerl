@@ -1,3 +1,8 @@
 #!/bin/bash
 
-rsync -roglv /usr/src/ /var/www/ --ignore-existing --exclude='*/.gitplaceholder'
+for DIR in `ls /usr/src`
+do
+	# If there is content, do not overwrite
+	[ "$(ls -A /var/www/$DIR/)" ] || rsync -roglv /usr/src/$DIR/ /var/www/$DIR/
+done
+
