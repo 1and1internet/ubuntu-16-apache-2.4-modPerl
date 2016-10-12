@@ -1,0 +1,1 @@
+# This is a standard cgi-bin container. Deploy scripts here that you do not want running under Apache::Registry ( i.e. the /perl directory )

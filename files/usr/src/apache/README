@@ -1,3 +1,8 @@
-You can put your own apache config in this directory and it will be invoked the next time you deploy this docker container.
-
-You can also modify any of the existing files in this directory. To revert to the default version of a file, delete it and restart your container.
+# You can put your own apache config in this directory and it will be invoked the next time you restart this server.
+# This allows you to create your own mod_perl handlers.
+# 
+# You can also modify any of the existing files in this directory. 
+# To revert to the default version of a file, delete it and restart your server.
+# 
+# If you make a mistake in your config then apache will not start on next reboot.
+# Instead, an 'emergency' apache site will be deployed advising you to investigate the error logs for details.

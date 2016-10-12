@@ -1,0 +1,77 @@
+#!/usr/bin/perl
+#
+#
+# So, because an end user can mess up apache ( and cause it to not start ) we need to
+# be a little nicer in our handling of the apache control.
+# So, we'll start it up, **TEST IT**, and employ an emergency config if required
+
+use strict;
+use IO::Socket::INET;
+
+apache_start();
+unless(apache_test())
+{
+  apache_emerg();
+  apache_start();
+}
+
+exit(1-apache_test());
+
+sub check_socket
+{
+  my ($host,$port) = @_;
+  my $socket = IO::Socket::INET->new(PeerAddr => $host,
+                                     PeerPort => $port,
+                                     Proto    => 'tcp')
+  or return 0;
+  $socket -> connected() or return 0;
+  return 1;
+}
+
+sub apache_emerg
+{
+  # Invoke a default apache config
+  print "Invoking default apache config\n";
+  my $result = `rm /etc/apache2/sites-available/* -f`;
+  open(FH, "> /etc/apache2/sites-available/000-default.conf");
+  print FH <<VHOST;
+<VirtualHost *:8080>
+ DocumentRoot /var/emerg/
+  ErrorLog \${APACHE_LOG_DIR}/emerg_error.log
+  CustomLog \${APACHE_LOG_DIR}/emerg_access.log combined
+  <Directory /var/emerg/>
+  Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+  </Directory>
+ </VirtualHost>
+VHOST
+ close(FH);
+}
+
+sub apache_test
+{
+  my $timeout=3;
+  my $response;
+  eval {
+    local $SIG{ALRM} = sub { die "alarm\n" }; 
+    alarm $timeout;
+    $response = check_socket("127.0.0.1","8080");
+    alarm 0;
+  };
+  if ($@) {
+    print "Caught sigalarm\n";
+    return 0;
+  }
+  else
+  {
+    return $response;
+  }
+}
+  
+sub apache_start
+{
+  my $result = `killall -9 httpd >> /dev/null 2>&1`;
+  my $result = `/bin/bash -c "source /etc/apache2/envvars && exec /usr/sbin/apache2 -DFOREGROUND"`;
+  return $?;
+}

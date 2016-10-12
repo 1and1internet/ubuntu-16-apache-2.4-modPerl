@@ -1,7 +1,5 @@
 #!/usr/bin/perl
 #
-# (c) Fasthosts Internet Limited 2016
-#
 use strict;
 $|=1;
 

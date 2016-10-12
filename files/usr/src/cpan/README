@@ -1,0 +1,13 @@
+# List any cpan modules you wish to have installed in modules.conf, line seperated.
+#
+# EG
+#
+# XML::Parser
+# Template::Plugin::CGI
+#
+#
+# New modules will be installed on the next restart of your server. This may take a short while.
+# Once installed, modules will then be stored in your persistent webspace at cpan/perl5.
+# /var/www/cpan/perl5 is added to @INC by apache
+#
+# Output from the automated system will be sent to cpan/cpan_install.log
