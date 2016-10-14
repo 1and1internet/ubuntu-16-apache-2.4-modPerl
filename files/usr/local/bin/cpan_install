@@ -33,10 +33,12 @@ if(-e $source)
     while(/\.\./) { s/\.\.//g; }
     /[\w+]/ or next;
     logme("Installing ( if required ) $_");
-    my $cmd = `export PERL_CPANM_HOME='$cpan'; cpanm $_ --local-lib /var/www/cpan/perl5/ --self-contained --verbose >> $log 2>&1`;
+    my $cmd = `export PERL_CPANM_HOME='$cpan'; cpanm $_ --local-lib /var/www/cpan/perl5/ --self-contained --verbose 2>&1`;
     logme($cmd);
   }
   close(FH);
+  logme("Finishing up at ".localtime();
+  exit(0);
 }
 
 unlink($lock);
