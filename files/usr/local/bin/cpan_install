@@ -33,8 +33,7 @@ if(-e $source)
     while(/\.\./) { s/\.\.//g; }
     /[\w+]/ or next;
     logme("Installing ( if required ) $_");
-    my $cmd = `export PERL_CPANM_HOME='$cpan'; cpanm $_ --local-lib /var/www/cpan/perl5/ --self-contained --verbose 2>&1`;
-    logme($cmd);
+    install($_);  
   }
   close(FH);
   logme("Finishing up at ".localtime());
@@ -49,4 +48,23 @@ sub logme
   open(LOG, ">> $log");
   print "[".localtime()."] $arg\n";
   close(LOG);
+}
+
+sub install
+{
+  my $module = shift;
+  my $cmd;
+  eval {
+    local $SIG{ALRM} = sub { die "alarm\n" }; 
+    alarm 600;
+    $cmd = `export PERL_CPANM_HOME='$cpan'; cpanm $module --local-lib /var/www/cpan/perl5/ --self-contained --verbose >> $log 2>&1`;
+    alarm 0;
+  };
+  if ($@) {
+    return "Caught sigalarm\n";
+  }
+  else
+  {
+    return $cmd;
+  }
 }
