@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/local/bin/cpan_install >> /var/log/cpan_invoke.log 2>&1
+/usr/local/bin/cpan_install &
