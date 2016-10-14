@@ -4,7 +4,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN \
   apt-get -qq -y clean && \
   apt-get -qq update && \
-  apt-get -qq install -y libapache2-mod-perl2 libcgi-pm-perl liblocal-lib-perl cpanminus make gcc libexpat1-dev rsync && \
+  apt-get -qq install -y libapache2-mod-perl2 libcgi-pm-perl liblocal-lib-perl cpanminus make gcc libexpat1-dev rsync dpkg-dev && \
   apt-get -qq source apache2 && \
   /usr/sbin/a2enmod cgid && \
   rm -rf /var/lib/apt/lists/*
