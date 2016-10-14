@@ -2,17 +2,18 @@
 #
 use strict;
 $|=1;
-
-my $cpan = "/var/www/cpan";
-my $source = "${cpan}modules.conf";
+my $cpan = "/var/www/cpan/";
+my $source = "${cpan}/modules.conf";
 my $log = "${cpan}/cpan_install.log";
 my $lock = "${cpan}/cpan.lock";
+
 
 if(-e $lock) 
 {
 	print "Aborting due to lockfile presence\n";
 }
-open(FH, "> $lock");
+
+open(FH, "> $lock") or die "Cannot open lockfile\n";
 print FH localtime()."\n";
 close(FH);
 
@@ -20,6 +21,7 @@ close(FH);
 
 if(-e $source)
 {
+  print "Found '$source'\n";
   (-T $source) or die "'$source' is not a text file\n";
   open(FH, "$source") or die "Cannot open '$source' for reading\n";
   while(<FH>)
@@ -30,7 +32,7 @@ if(-e $source)
     while(/\.\./) { s/\.\.//g; }
     /[\w+]/ or next;
     logme("Installing ( if required ) $_");
-    my $cmd = `export PERL_CPANM_HOME='/var/www/cpan/'; cpanm $_ --local-lib /var/www/cpan/perl5/ --self-contained --verbose >> $log 2>&1`;
+    my $cmd = `export PERL_CPANM_HOME='$cpan'; cpanm $_ --local-lib /var/www/cpan/perl5/ --self-contained --verbose >> $log 2>&1`;
   }
   close(FH);
 }
