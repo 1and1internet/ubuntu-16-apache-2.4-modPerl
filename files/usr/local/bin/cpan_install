@@ -7,7 +7,7 @@ my $source = "${cpan}/modules.conf";
 my $log = "${cpan}/cpan_install.log";
 my $lock = "${cpan}/cpan.lock";
 
-
+exit(0);
 if(-e $lock) 
 {
 	print "Aborting due to lockfile presence\n";
@@ -33,6 +33,7 @@ if(-e $source)
     /[\w+]/ or next;
     logme("Installing ( if required ) $_");
     my $cmd = `export PERL_CPANM_HOME='$cpan'; cpanm $_ --local-lib /var/www/cpan/perl5/ --self-contained --verbose >> $log 2>&1`;
+    logme($cmd);
   }
   close(FH);
 }
