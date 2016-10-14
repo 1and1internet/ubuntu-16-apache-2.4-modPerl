@@ -7,7 +7,8 @@ my $source = "${cpan}/modules.conf";
 my $log = "${cpan}/cpan_install.log";
 my $lock = "${cpan}/cpan.lock";
 
-exit(0);
+(-d $cpan) or exit(0); # Protect drone tests
+
 if(-e $lock) 
 {
 	print "Aborting due to lockfile presence\n";
