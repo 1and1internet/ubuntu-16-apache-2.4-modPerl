@@ -6,6 +6,7 @@ services:
 #    volumes:
 #        - /path/to/your/local/ssl/cert/:/path/to/openshift/secret
     user: "1000000"
+#    user: 'root'
     build: .
     image: modperl
     ports:
